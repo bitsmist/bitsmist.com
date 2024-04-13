@@ -1,0 +1,36 @@
+======DialogPerk======
+
+''継承:Perk'' ''セクション名:dialog'' ''優先度:800''
+
+=====概要=====
+
+DialogPerkはユニットをダイアログ化する機能を付与します。
+
+=====設定=====
+
+====書式-ユニット固有設定====
+
+各ユニット固有の設定は"dialog"セクションに記述します。
+
+<code javascript>
+{
+    "dialog": {
+        "options": {
+            "autoOpen": Boolean,
+            "autoRefreshOnOpen": Boolean,
+            "showBackdrop": Boolean
+        },
+        "backdropOptions": {
+            "closeOnClick": Boolean,
+            "hideOptions": {
+                "addClasses": [String,...],
+                "removeClasses": [String,...],
+            },
+            "showOptions": {
+                "addClasses": [String, ...],
+                "removeClasses": [String,...],
+            },
+        }
+    }
+}
+</code>

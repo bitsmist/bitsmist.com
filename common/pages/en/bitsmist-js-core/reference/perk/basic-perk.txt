@@ -1,0 +1,456 @@
+======BasicPerk======
+
+''Inherits:Perk'' ''Section:basic'' ''Priority:0''
+
+=====Overview=====
+
+The BasicPerk grants basic functionality to the unit. However, this perk only triggers the events necessary for processing; other perks and event handlers do the actual processing.
+
+=====Settings=====
+
+====Format - Unit====
+
+Unit-specific settings are written in the "basic" section.
+
+<code javascript>
+{
+    "basic": {
+        "options": {
+            "autoClear": Boolean,
+            "autoFetch": Boolean,
+            "autoFill": Boolean,
+            "autoRefresh": Boolean,
+            "autoRestart": Boolean,
+            "autoSetup": Boolean,
+            "autoTransform": Boolean,
+        }
+    }
+}
+</code>
+
+===="autoClear"====
+
+''Type:Boolean'' ''Default:True''
+
+If true, using the [[#refresh|refresh]] spell will automatically invoke the [[#clear|clear]] spell as well.
+
+----
+
+===="autoFetch"====
+
+''Type:Boolean'' ''Default:True''
+
+If true, using the [[#refresh|refresh]] spell automatically invokes the [[#fetch|fetch]] spell as well.
+
+----
+
+===="autoFill"====
+
+''Type:Boolean'' ''Default:True''
+
+If true, using the [[#refresh|refresh]] spell will automatically invoke the [[#fill|fill]] spell as well.
+
+----
+
+===="autoRefresh"====
+
+''Type:Boolean'' ''Default:True''
+
+If True, the [[#refresh|refresh]] spell is automatically invoked during the initialization process.
+
+----
+
+===="autoRestart"====
+
+''Type:Boolean'' ''Default:False''
+
+If true, when a unit is connected to a node (at ConnectedCallback), the unit will be initialized again even if it has already been initialized.
+
+----
+
+===="autoSetup"====
+
+''Type:Boolean'' ''Default:True''
+
+If true, the [[#setup|setup]] spell is automatically invoked during the transformation.
+
+----
+
+===="autoTransform"====
+
+''Type:Boolean'' ''Default:True''
+
+If true, the [[#transform|transform]] spell is automatically called during the initialization.
+
+=====Methods (Unit)=====
+====cast(spellName, ..args)====
+
+''Type:*'' ''Target:Prototype''
+
+Cast the unit's spell (asynchronous function).
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|spellName \\ ''Required''|String|The spell to cast.|
+|...args|*|Arguments passed to the spell.|
+
+===Return Value===
+
+The promise.
+
+----
+
+====use(skillName, ..args)====
+
+''Type:*'' ''Target:Prototype''
+
+Use the unit's skill (synchronous function).
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|skillName \\ ''Required''|String|The skill name to use.|
+|...args|*|Arguments passed to the skill.|
+
+===Return Value===
+
+The return value of the function.
+
+=====Assets=====
+
+====inventory====
+
+''Type:ChainableStore'' ''Target:Instance''
+
+The asset to store a unit's information. It may be referenced by other units.
+
+----
+
+====perk====
+
+''Type:Object'' ''Target:Instance''
+
+The asset to store perks that are attached to a unit.
+
+----
+
+
+====skill====
+
+''Type:ChainableStore'' ''Target:Instance''
+
+The asset to store skills.
+
+----
+
+====spell====
+
+''Type:ChainableStore'' ''Target:Instance''
+
+The asset to store spells.
+
+
+=====Inventory=====
+
+====unitRoot====
+
+''Type:HTMLElement'' ''Target:Instance''
+
+Stores a root element of a unit. It is a ShadowRoot object if the unit is ShadowDOM.
+
+=====Skills=====
+
+====locate====
+
+''Type:HTMLElement'' ''Target:Unit''
+
+Returns the first unit that matches the target information specified in the argument.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|target \\ ''Required''|Object \\ String \\ HTMLElement|The target unit information.|
+
+The target argument is the information that specifies the target. If a string is specified, it is searched as a tag name. If an HTMLElement is specified, it is returned as is. For objects, the following keys exist:
+
+^Key^Description^
+|"selector"|querySelector() is executed with this value as an argument against the document.|
+|"scan"|A scan skill is executed with this value as an argument against the unit.|
+|"uniqueId"|The unique ID of the unit.|
+|"tagName"|The tag name of the unit.|
+|"object"|The unit itself. This is returned as is.|
+|"id"|The ID of the unit.|
+|"className"|The class name.|
+
+===Return Value===
+
+The unit matches the target information.
+
+----
+
+====locateAll====
+
+''Type:Array of HTMLElement'' ''Target:Unit''
+
+Returns all the units that match the target information specified in the argument.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|target \\ ''Required''|Object \\ String \\ HTMLElement|The information to locate the units. See [[#locate|locate]] for details.|
+
+===Return Value===
+
+The units match the target information.
+
+----
+
+====scan====
+
+''Type:HTMLElement'' ''Target:Unit''
+
+Returns the first HTML element in the unit that matches the given query.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|query \\ ''Required''|String|A search query, using the same format as document.querySelectorAll().|
+
+===Return Value===
+
+The first HTML element in the unit that matches the given query.
+
+----
+
+====scanAll====
+
+''Type:NodeList'' ''Target:Unit''
+
+Returns all the HTML elements in the unit that match the given query.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|query \\ ''Required''|String|A search query, using the same format as document.querySelectorAll().|
+
+===Return Value===
+
+All the HTML elements in the unit that match the given query.
+=====Spells=====
+
+====clear====
+
+''Type:Undefined'' ''Target:Unit''
+
+Triggers events to clear this unit.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|options|Object|Options passed to the event to be triggered.|
+
+===Return Value===
+
+Undefined.
+
+===Trigger Events===
+
+  * beforeClear
+  * doClear
+  * afterClear
+
+----
+
+====fetch====
+
+''Type:Undefined'' ''Target:Unit''
+
+Triggers events to retrieve the data.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|options|Object|Options passed to the event to be triggered.|
+
+===Return Value===
+
+Undefined.
+
+===Trigger Events===
+
+  * beforeFetch
+  * doFetch
+  * afterFetch
+
+----
+
+====fill====
+
+''Type:Undefined'' ''Target:Unit''
+
+Triggers events to fill the unit with content.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|options|Object|Options passed to the event to be triggered.|
+
+===Return Value===
+
+Undefined.
+
+===Trigger Events===
+
+  * beforeFill
+  * doFill
+  * afterFill
+
+----
+
+====refresh====
+
+''Type:Undefined'' ''Target:Unit''
+
+Triggers events to draw the unit. Also calls [[#clear|clear]], [[#fetch|fetch]], and [[#fill|fill]] spells depending on the the settings [[#autoclear|autoClear]], [[#autofetch|autoFetch]], [[#autofill|autoFill]] respectively.
+
+If [[#autorefresh|autoRefresh]] setting is true (true by default), this function will be called in the unit's initialization automatically.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|options|Object|Options passed to the event to be triggered.|
+
+===Return Value===
+
+Undefined.
+
+===Trigger Events===
+
+  * beforeRefresh
+  * doRefresh
+  * afterRefresh
+
+===Reference Settings===
+
+  * [[#autoclear|basic.options.autoClear]]
+  * [[#autofetch|basic.options.autoFetch]]
+  * [[#autofill|basic.options.autoFill]]
+
+----
+
+====setup====
+
+''Type:Undefined'' ''Target:Unit''
+
+Triggers events to set up the unit.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|options|Object|Options passed to the event to be triggered.|
+
+===Return Value===
+
+Undefined.
+
+===Trigger Events===
+
+  * beforeSetup
+  * doSetup
+  * afterSetup
+
+----
+
+====start====
+
+''Type:Undefined'' ''Target:Unit''
+
+Starts the initialization of the unit. This is automatically called when the tag is instantiated and does not normally need to be called explicitly.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|options|Object|Options passed to the event to be triggered.|
+
+===Return Value===
+
+Undefined.
+
+===Trigger Events===
+
+  * beforeStart
+  * doStart
+  * afterStart
+  * afterReady
+
+===Reference Settings===
+
+  * [[#autotransform|basic.options.autoTransform]]
+  * [[#autorefresh|basic.options.autoRefresh]]
+
+----
+
+====stop====
+
+''Type:Undefined'' ''Target:Unit''
+
+Triggers events to terminate the unit. It is not normally necessary to call this event explicitly, as it is called automatically when the tag is detached.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|options|Object|Options passed to the event to be triggered.|
+
+===Return Value===
+
+Undefined.
+
+===Trigger Events===
+
+  * beforeStop
+  * doStop
+  * afterStop
+
+----
+
+====transform====
+
+''Type:Undefined'' ''Target:Unit''
+
+Triggers events to switch the HTML and CSS to be applied to the unit. Between beforeTransform and doTransform, it calls the [[#setup|setup]] spell if [[#autosetup|autoSetup]] setting is true. It also calls the [[en:bitsmist-js-core:reference:perk:unit-perk#materializeall|unit.materializeAll]] spell after the doTransform event is triggered and the child units in HTML are materialized.
+
+If [[#autotransform|autoTransform]] setting is true (true by default), this function will be called in the unit's initialization automatically.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|options|Object|Options passed to the event to be triggered.|
+
+===Return Value===
+
+Undefined.
+
+===Trigger Events===
+
+  * beforeTransform
+  * doTransform
+  * afterTransform
+
+===Reference Settings===
+
+  * [[#autosetup|basic.options.autoSetup]]

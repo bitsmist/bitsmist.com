@@ -1,0 +1,224 @@
+======SettingPerk======
+
+''Inherits:Perk'' ''Section:setting'' ''Priority:10''
+
+=====Overview=====
+
+SettingPerk grants functions related to the unit's settings.
+
+=====Setting=====
+
+====Format - Global====
+
+Settings common to all units are written in the "system.setting" section of the global settings.
+
+<code javascript>
+{
+    "system": {
+        "setting": {
+            "options": {
+                "path": String,
+                "settingFormat": "js"|"json",
+                "settingsRef": Boolean|String,
+            }
+        }
+    }
+}
+</code>
+
+====Format - Unit====
+
+Unit-specific settings are written in the "setting" section.
+
+<code javascript>
+{
+    "setting": {
+        "options": {
+            "autoLoad": String,
+            "fileName": String,
+            "path": String,
+            "settingFormat": "js"|"json",
+            "settingsRef": Boolean|String,
+        }
+    }
+}
+</code>
+
+====Format - Tag Attributes====
+
+Some settings can be written in tag attributes.
+
+<code html>
+<my-unit
+    bm-autoload=String
+    bm-filename=String
+    bm-options=String
+    bm-path=String
+    bm-settingref=Empty|String|"false"
+></my-unit>
+</code>
+===="autoLoad" / bm-autoload====
+
+''Type:String'' ''Default:False''
+
+Indicates that the unit will automatically load the necessary files. This is essentially a UnitPerk setting, but if a URL is specified here, SettingPerk will use it as the path and file name of the settings file.
+
+----
+====bm-options====
+
+''Type:String''
+
+Settings string in JSON format. The settings specified here will be merged into the "options" section of the unit settings.
+
+----
+===="fileName" / bm-filename====
+
+''Type:String'' ''Default:<tag name>''
+
+The Setting file name. No extension is required.
+
+The priority, in higher order,  is "setting.options.fileName", [[ja:bitsmist-js-core:reference:perk:unit-perk#filename_bm-filename|"unit.options.fileName"]].  If all of them are not available, then the tag name is used as the file name.
+
+Loads a file with the filename + extension "settings.js".
+----
+===="path" / bm-path====
+
+''Type:String''
+
+The path to the setting file. The final path is the path concatenated with the path in the global settings and the path in the unit-specific settings.
+
+The global settings are used in the following order of precedence: "system.setting.options.path", "system.unit.options.path" and unit-specific settings are used in the following order of precedence: "setting.options.path", "unit.options.path".
+
+----
+
+===="settingFormat"====
+
+''Type:String'' ''Default:"json"''
+
+The format of the setting file. "js" or "json" can be specified. If not specified, the file is treated as a JSON file.
+
+----
+
+===="settingsRef" / bm-settingsref====
+
+''Type:Boolean|String'' ''Default:False''
+
+The URL to the unit's settings file or Boolean. If True, the default URL is used. The settings are read asynchronously and merged into the unit's settings.
+
+If the value is set in the bm-settingsref attribute, it is assumed to be the URL to the file. It is treated as true if no value is specified. To specify false, specify the string "false".
+
+=====Assets=====
+
+====setting====
+
+''Type:ChainableStore'' ''Target:Instance''
+
+This asset holds the unit's settings.
+=====Skills=====
+
+====get====
+
+''Type:*'' ''Target:Unit''
+
+Retrieves settings from the settings asset.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|key \\ ''Required''|String|The key to be retrieved.|
+|defaultValue|*|The value to be returned if the key does not exist.|
+
+===Return Value===
+
+The value of the specified key. If the key is not found, the defalutValue parameter is returned if specified, or Undefined if not specified.
+
+----
+
+====merge====
+
+''Type:Undefined'' ''Target:Unit''
+
+Merges settings.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|key \\ ''Required''|String|The key to merge.|
+|value \\ ''Required''|*|The value to merge.|
+
+===Return Value===
+
+Undefined.
+
+----
+
+====set====
+
+''Type:Undefined'' ''Target:Unit''
+
+Sets the setting to the settings asset.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|key \\ ''Required''|String|The key to set.|
+|value \\ ''Required''|*|The value to set.|
+
+===Return Value===
+
+Undefined.
+
+=====Spells=====
+
+====apply====
+
+''Type:Undefined'' ''Target:Unit''
+
+Triggers events to apply the settings. It also uses the [[en:bitsmist-js-core:reference:perk:perk-perk#attachperks|"perk.attachPerks"]] spell between "beforeApplySettings" and "doApplySettings" to attach the necessary perks.
+
+===Parameters===
+
+|< 100% 180px 130px - >|
+^Parameter^Type^Description^
+|options \\ ''Required''|Object|Options passed to the event to be triggered. Has the following keys:|
+|  "settings" \\ ''Required''|Object|The unit settings.|
+
+===Return Value===
+
+Undefined.
+
+===Trigger Events===
+
+  * beforeApplySettings
+  * doApplySettings
+  * afterApplySettings
+
+----
+
+====summon====
+
+''Type:Undefined'' ''Target:Unit''
+
+Loads the unit's external settings file. The loaded settings are merged into the unit's settings. The file to load is specified by [[#settingsfref_bm-settingsref|settingsRef/bm-settingsref]].
+
+If the settings format is a Javascript object, "this" can be used to refer to the unit in the settings since the unit is bound to the object.
+
+===Parameters===
+
+None.
+
+===Return Value===
+
+Undefined.
+
+===Reference Settings===
+
+  * [[#settingsfref_bm-settingsref|setting.options.settingRef/bm-settingsref]]
+  * [[#settingfomrat|setting.options.settingFormat]]/[[#settingfomrat|system.setting.options.settingFormat]]
+  * [[en:bitsmist-js-core:reference:perk:unit-perk#path_bm-path|system.unit.options.path]]
+  * [[en:bitsmist-js-core:reference:perk:unit-perk#path_bm-path|unit.options.path]]
+  * [[en:bitsmist-js-core:reference:perk:unit-perk#filename_bm-filename|unit.options.fileName]]
+  * [[en:bitsmist-js-core:reference:perk:unit-perk#query|unit.options.query]]

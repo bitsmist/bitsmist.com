@@ -1,0 +1,28 @@
+======ListPerk======
+
+''継承:Perk'' ''セクション名:list'' ''優先度:310''
+
+=====概要=====
+
+ListPerkはユニットにリスト表示機能を付与します。
+
+=====設定=====
+
+====書式-ユニット固有設定====
+
+各ユニット固有の設定は"list"セクションに記述します。
+
+<code javascript>
+{
+    "list": {
+        "options": {
+            "async": Boolean,
+            "autoFill": Boolean,
+            "listRootNode": String,
+            "rowSkinName": String,
+        },
+        "rowevents": {
+        }
+    }
+}
+</code>

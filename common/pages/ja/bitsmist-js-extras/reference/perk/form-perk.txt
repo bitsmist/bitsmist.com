@@ -1,0 +1,29 @@
+======FormPerk======
+
+''継承:Perk'' ''セクション名:form'' ''優先度:310'' ''依存:ValidationPerk''
+
+=====概要=====
+
+FormPerkはユニットにフォーム処理の機能を付与します。
+
+=====設定=====
+
+====書式-ユニット固有設定====
+
+各ユニット固有の設定は"form"セクションに記述します。
+
+<WRAP legend>書式:</WRAP>
+<code javascript>
+{
+    "form": {
+        "options": {
+            "autoClear": Boolean,
+            "autoCollect": Boolean,
+            "autoCrop": Boolean,
+            "autoFill": Boolean,
+            "autoValidate": Boolean,
+            "validatorName": String,
+        }
+    }
+}
+</code>

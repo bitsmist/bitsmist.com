@@ -1,0 +1,252 @@
+======StylePerk======
+
+''継承:Perk'' ''セクション名:style'' ''優先度:200''
+
+=====概要=====
+
+StylePerkはユニットのCSSのロードと適用など、ユニットのスタイルに関する機能を付与します。
+
+=====設定=====
+
+====書式-グローバル設定====
+
+全ユニットに共通な設定はグローバル設定の"system.style"セクションに記述します。
+
+systemセクションのapplyで指定されたCSSは、Perkの初期化時にロードされ、Documentに対して適用されます。
+
+<code javascript>
+{
+    "system": {
+        "style": {
+            "options": {
+                "apply": [String, ...],
+                "path": String,
+            },
+            "styles": {
+                <styleName>: {
+                    "CSS": String,
+                    "type": "CSS"|"URL",
+                    "URL": String,
+                },
+                ...
+            }
+        }
+    }
+}
+</code>
+
+====書式-ユニット固有設定====
+
+各ユニット固有の設定は"style"セクションに記述します。
+
+<code javascript>
+{
+    "style": {
+        "options": {
+            "apply": [String, ...],
+            "fileName": String,
+            "hasStyle": Boolean,
+            "path": String,
+            "styleRef": Boolean|String,
+        },
+        "styles": {
+            <styleName>: {
+                "apply": [String, ...],
+                "CSS": String,
+                "fileName": String,
+                "path": String,
+                "type": "CSS"|"URL",
+                "URL": String,
+            },
+            ...
+        }
+    }
+}
+</code>
+
+====書式-タグ属性====
+
+いくつかの設定は、タグ属性に指定することもできます。
+
+<code html>
+<my-unit
+    bm-styleref=Empty|String|"false"
+></my-unit>
+</code>
+
+===="apply"====
+
+''型:Array of String''
+
+適用するCSSの名前を指定します。"system.style"セクションに記述されている場合、指定されたCSSをdocumentに対して適用します。
+
+"style"セクション内では、"options"セクションと"styles.<styleName>"セクションに記述できます。"options"セクション内に記述された場合、どのCSSを使用しても適用されます。"styles.<styleName>"セクションに記述して場合、そのCSSを使用する場合のみ適用されます。各CSSは、Shadow DOMモードの場合はユニットに、そうでない場合はdocumentに対して適用されます。
+
+なお、ユニットのデフォルトのスタイルをここに指定する必要はありません。"style.options.styleRef"が指定してある場合、ここに記述されていなくても自動的に**一番最後に**適用されます。
+
+----
+
+===="CSS"====
+
+''型:String''
+
+CSSの文字列を指定します。これは**CSSであって、CSSのファイル名ではありません**。"type"設定が"CSS"の時に使用されます。
+
+----
+
+===="fileName"====
+
+
+''型:String'' ''デフォルト:<タグ名>''
+
+CSSのファイル名を指定します。拡張子は不要です。"style.options"と"style.styles.<styleName>"の２箇所に記述することができます。
+
+優先順は高い順に、"style.styles.<styleName>.fileName"、"style.options.fileName"、[[ja:bitsmist-js-core:reference:perk:unit-perk#filename_bm-filename|"unit.options.fileName"]]で、いずれも指定がない場合はタグ名がファイル名として使われます。
+
+ファイル名に拡張子"css"を付けたファイルをロードします。
+
+----
+
+===="hasStyle"====
+
+
+''型:Boolean'' ''デフォルト:True''
+
+ユニットがユニット専用CSSを持つかどうかを指定します。Falseの場合、ユニット専用CSSのロードと適用は行われません。ただし、"style.options.apply"に設定されている共通CSSは適用されます。
+
+----
+
+===="path"====
+
+''型:String''
+
+CSSファイルのパスを指定します。"style.options"と"style.styles.<styleName>"の２箇所に記述することができます。グローバル設定のパスと、ユニット固有設定のパスを連結したものが、最終的なパスとして使われます。
+
+グローバル設定は"system.style.options.path"、"system.unit.options.path"の優先順で使用され、ユニット固有設定は"style.styles.<styleName>.path"、"style.options.path"、"unit.options.path"の優先順で使用されます。
+
+----
+
+====<styleName>====
+
+''型:String''
+
+スタイル名を指定します。デフォルトのスタイルは"default"と指定してください。一つの<styleName>を、ユニットに適用することができます。[[ja:bitsmist-js-core:reference:perk:basic-perk#transform|basic.transform]]スペルを使って別のCSSに切り替える際に、この名前を指定します。
+
+
+----
+
+===="styleRef" / bm-styleref====
+
+''型:Boolean|String'' ''デフォルト:True''
+
+ユニットのデフォルトのCSSファイルへのURLを指定します。Trueの場合は、デフォルトのURLが使用されます。Falseの場合、デフォルトCSSファイルのロードと適用が行われません。[[#hasstyle|hasStyle]]オプションをFalseに設定するのと同じ意味になります。
+
+bm-styleref属性を指定した場合、値が指定されていればファイルへのURL、値が指定されてなければTrueとみなされます。Falseを指定したい場合は、"false"という文字列を指定してください。
+
+CSSファイルが存在しない場合、404エラーが発生し、ユニットの初期化が止まります。もしユニットにCSSファイルがないのであれば、明示的にfalseをセットしてください。
+----
+
+===="type"====
+
+''型:String'' ''デフォルト:"URL"''
+
+CSSをどこから取得するかを指定します。タイプは"CSS"、"URL"のいずれかです。"CSS"の場合は、"CSS"設定からCSS文字列を取得して使用します。"URL"の場合は、"URL"オプションで指定されたURLからCSSファイルをロードします。
+
+----
+
+===="URL"====
+
+''型:String''
+
+CSSファイルのURLを指定します。"type"設定が"URL"の時に使用されます。
+
+=====イベントハンドラ=====
+
+
+
+====beforeTransform====
+
+beforeTransformでは、まず現在適用されているCSSをクリアした後、[[#summon|summon]]スペルを使って共通CSSをロードします。共通CSSは"style.options.apply"に指定されている共通スタイルです。ロードが完了すると、[[#apply|apply]]スペルを使ってCSSをユニットに適用します。
+
+===参照する設定===
+
+  * [[#apply|style.options.apply]]
+
+----
+
+====doTransform====
+
+doTransformでは、設定の"style.options.hasStyle"がTrueの場合(デフォルトはTrue)、[[#summon|summon]]スペルを使ってユニット専用CSSをロードします。ユニット専用CSSはe.detail.styleNameで指定されたスタイルと、そのスタイルの設定"style.styles.<styleName>.apply"に指定されているスタイルです。ロードが完了すると、[[#apply|apply]]スペルを使ってCSSをユニットに適用します。
+
+===参照する設定===
+
+  * [[#hasstyle|style.options.hasStyle]]
+  * [[#apply|style.styles.<styleName>.apply]]
+=====インベントリ=====
+
+====styles====
+
+''型:Object'' ''対象:インスタンス''
+
+スタイル情報を保持するオブジェクトです。それぞれのアイテムは以下のキーを持っています。
+
+|< 100% 180px 130px - >|
+^キー^型^説明^
+|name|String|スタイル名です。|
+|CSS|String|スタイルのCSSです。|
+|status|String|スタイルのロード状態を示します。""(空白)、"loading"または"loaded"の値を取ります。|
+
+
+=====スペル=====
+
+====apply====
+
+''型:Undefined'' ''対象:Unit''
+
+ユニットにスタイルを適用します。Shadow DOMの場合はユニットに、そうでない場合はDocumentに対して適用します。すでに適用されているスタイルは、適用されません。
+
+===パラメータ===
+
+|< 100% 180px 130px - >|
+^パラメータ^型^説明^
+|styleName \\ ''必須''|String|適用するスタイルの名前です。|
+
+===戻り値===
+
+なし。
+
+===例外===
+
+  * 指定されたスタイルがまだロードされてない場合。
+
+
+----
+
+====summon====
+
+''型:Undefined'' ''対象:Unit''
+
+CSSをロードします。ロードするのみで適用はされません。既にロード済みの場合は、ロードされません。optionsパラメータが渡されない場合、パラメータで指定されたスキン名の設定を参照します。
+
+===パラメータ===
+
+|< 100% 180px 130px - >|
+^パラメータ^型^説明^
+|styleName \\ ''必須''|String|ロードするスタイル名です。|
+|options|Object|[[#書式-ユニット固有設定|設定の<styleName>の値]]と同じものです。|
+
+===戻り値===
+
+ロードしたスタイルの[[#styles|スタイル情報オブジェクト]]を返します。
+
+===参照する設定===
+
+  * [[#path|style.options.path]] / [[ja:bitsmist-js-core:reference:perk:unit-perk#path_bm-path|unit.options.path]]
+  * [[#path|style.options.path]]
+  * [[#styleref_bm-styleref|style.options.styleRef]]
+  * [[#fileName|style.styles.<styleName>.fileName]]
+  * [[#type|style.sytles.<styleName>.type]]
+  * [[#css|style.sytles.<styleName>.CSS]]
+  * [[#path|style.styles.<styleName>.path]]
+  * [[#url|style.sytles.<styleName>.URL]]
+  * [[#path|system.style.options.path]] / [[ja:bitsmist-js-core:reference:perk:unit-perk#path_bm-path|system.unit.options.path]]

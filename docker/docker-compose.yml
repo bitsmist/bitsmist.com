@@ -1,0 +1,26 @@
+version: '3'
+services:
+    bitsmist.com_phpfpm:
+        image: bitsmist.com/phpfpm
+        container_name: bitsmist.com_phpfpm
+        network_mode: host
+        volumes:
+            - ./phpfpm/conf/tzdata/Japan:/etc/localtime
+            - ./phpfpm/conf/php/php.ini:/usr/local/etc/php/php.ini
+            - ./phpfpm/conf/php/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            - ./phpfpm/conf/php-fpm/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf
+            - ./phpfpm/log:/usr/local/var/log
+            - ./phpfpm/contents/common:/usr/share/contents/common
+            - ./phpfpm/contents/public:/usr/share/contents/public
+    bitsmist.com_nginx:
+        image: bitsmist.com/nginx
+        container_name: bitsmist.com_nginx
+        network_mode: host
+        depends_on:
+            - bitsmist.com_phpfpm
+        volumes:
+            - ./nginx/conf/tzdata/Japan:/etc/localtime
+            - ./nginx/conf/nginx/conf.d:/etc/nginx/conf.d
+            - ./nginx/log:/var/log/nginx
+            - ./phpfpm/contents/common:/usr/share/contents/common
+            - ./phpfpm/contents/public:/usr/share/contents/public

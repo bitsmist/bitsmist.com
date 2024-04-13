@@ -1,0 +1,243 @@
+======LocalePerk======
+
+''継承:Perk'' ''セクション名:locale'' ''優先度:215''
+
+=====概要=====
+
+LocalePerkはユニットを国際化する機能を付与します。実際のローカライズは各ロケールハンドラが行います。
+
+=====設定=====
+
+====書式-グローバル設定====
+
+全ユニットに共通な設定はグローバル設定の"system.locale"セクションに記述します。
+
+<code javascript>
+{
+    "system": {
+        "locale": {
+            "options": {
+                "currencyName": String,
+                "fallbackLocaleName": String,
+                "localeName": String,
+                "localeServer": Boolean|String,
+            }
+        }
+    },
+}
+</code>
+
+====書式-ユニット固有設定====
+
+各ユニット固有の設定は"locale"セクションに記述します。ハンドラーによっては、独自の設定があります。それぞれのリファレンスを参照してください。
+
+<code javascript>
+{
+    "locale": {
+        "options": {
+            "autoLocalizeRows": Boolean,
+            "currencyName": String,
+            "fallbackLocaleName": String,
+            "localeName": String,
+            "localeServer": Boolean|String,
+        },
+        "handlers": {
+            <handlerName>: {
+                "handlerClassName": String,
+                "handlerOptions": {
+                }
+            },
+            ...
+        }
+    }
+}
+</code>
+
+
+====autoLocalizeRows====
+
+''型:Boolean'' ''デフォルト:False''
+
+Trueの場合、ローカライズ時に各行を個別にローカライズします。
+
+====currencyName====
+
+''型:String''
+
+システム全体で使用する、通貨名を指定します。
+
+====fallbackLocaleName====
+
+''型:String''
+
+システム全体で使用する、フォールバックロケール名を指定します。フォールバックロケール名は、ロケールのデータが見つからない時に、自動的に使用されます。
+
+====handlerClassName====
+
+''型:String''
+
+ロケールハンドラのクラス名を指定します。
+
+====handlerName====
+
+''型:String''
+
+ロケールハンドラの名前を指定します。この名前は重要ではありません。
+
+====localeName====
+
+''型:String'' ''デフォルト:navigator.language''
+
+システム全体で使用する、ロケール名を指定します。
+
+====localeServer====
+
+''型:Boolean|String'' ''デフォルト:False''
+
+ロケールサーバに接続するかを指定します。文字列を指定すると、ロケールサーバへのセレクタとみなされ、そのノードを取得して接続します。Trueの場合は、"bm-locale"ユニットに接続します。いずれの場合も、サーバーが"ready"状態になるのを待った後に、接続します。
+
+サーバーに接続すると、現在ユニットが保持する[[#locale|ロケール情報]]を、サーバーの値で上書きします。これによって、同じロケールサーバに接続する全てのユニットが、同じロケール情報を持つようになります。
+
+=====イベントハンドラ=====
+
+====doApplySettings====
+
+設定内容に応じて、ロケールハンドラを追加します。
+
+その後、DOMContentLoadedのタイミングでロケールサーバが存在すれば接続し、ロケール情報を共有します。
+
+
+====beforeApplyLocale====
+
+適用するロケールのデータをまだ持ってない場合、ユニットが保有するロケールハンドラの内、autoLoadオプションがTrueのロケールハンドラがメッセージをロードします。
+
+====doApplyLocale====
+
+localizeスキルを呼び出し、ユニットをローカライズします。またコンテンツをローカライズするために、ユニットのbasic.fillスキルを呼び出します。
+
+====afterFillRow====
+
+与えられた行のHTML要素をローカライズします。autoLocalizeRowsオプションがTrueの場合のみ、イベントハンドラがインストールされます。
+
+=====ステート=====
+
+====active====
+
+''型:Object'' ''対象:unit''
+
+現在アクティブなロケール情報を格納するオブジェクトです。[[#書式-グローバル設定|グローバル設定]]もしくは[[#書式-ユニット固有設定|ユニット設定]]の値で、初期化されます。また、ロケールサーバが存在する場合、ロケールサーバの値によって、上書きされます。
+
+以下のキーを持ちます。
+
+^キー^型^説明^
+|localeName|String|現在有効なロケール名です。[[#apply|applyスキル]]を使用すると、セットされます。|
+|fallbackLocaleName|String|ロケールが存在しない時に使用される、デフォルトのロケール名です。|
+|currencyName|String|通貨の名称です。|
+
+=====インベントリ=====
+
+====localizers====
+
+''型:Object'' ''対象:unit''
+
+このユニットに追加されたローカライザーを保持するオブジェクトです。
+
+====messages====
+
+''型:MultiStore'' ''対象:unit''
+
+ローカライザーによってロードされた、ロケールメッセージを保持するオブジェクトです。
+
+=====スキル=====
+
+====localize====
+
+''型:Undefined'' ''対象:unit''
+
+各ロケールハンドラを順番に呼び出し、ステートにセットされているロケール情報で、ローカライズします。
+
+===パラメータ===
+
+^パラメータ^型^説明^
+|rootNode|HTMLElement|ローカライズ対象のHTML要素です。|
+|interpolation|Object|ローカライズする際に、補完に使用されるオブジェクトです。|
+
+===戻り値===
+
+なし。
+
+====translate====
+
+''型:String'' ''対象:unit''
+
+引数で指定されたキーの、指定されたロケール名のメッセージを返します。指定されたロケール名のデータがない場合、ステートのfallbackLocaleNameで指定されたロケールの値を返します。
+
+===パラメータ===
+
+^パラメータ^型^説明^
+|key|String|対象となるキーです。|
+|localeName|String|ロケール名です。|
+
+===戻り値===
+
+指定されたロケールのメッセージです。
+
+=====スペル=====
+
+====addHandler====
+
+''型:Undefined'' ''対象:unit'' ''非同期''
+
+ユニットに、[[#handlerclassname|handlerClassName設定]]で指定されたクラスをインスタンス化して、追加します。該当の設定が存在しない場合、デフォルトで"LocaleHandler"を追加します。
+
+追加後、ロケールハンドラのinit()メソッドを呼び出し、ハンドラの初期化を行います。
+
+===パラメータ===
+
+^パラメータ^型^説明^
+|handlerName|String|対象となるキーです。|
+|options|Object|オプションです。ハンドラのinit()メソッドに渡されます。|
+
+===戻り値===
+
+なし。
+====apply====
+
+''型:Undefined'' ''対象:unit'' ''非同期''
+
+引数のオプションで渡されたロケールを適用するために、関連するイベントをトリガーします。このパーク自身も、[[#beforeapplylocale|beforeApplyLocale]]と[[#doapplylocale|doApplyLocale]]イベントハンドラにて処理を行います。
+
+オプションで指定されたロケール名は、doApplyLocaleイベントの直前で、ステートのlocale.localeNameにセットされます。
+
+===パラメータ===
+
+^パラメータ^型^説明^
+|options|Object|オプションです。トリガーするイベントに渡されます。以下のキーがあります。|
+|  "localeName"|String|適用するロケールの名前です。|
+
+===戻り値===
+
+なし。
+
+===トリガーするイベント===
+
+  * beforeApplyLocale
+  * doApplyLocale
+  * afterApplyLocale
+
+====summon====
+
+''型:Undefined'' ''対象:unit'' ''非同期''
+
+各ロケールハンドラを順番に呼び出し、引数で指定されたロケールメッセージをロードします。
+
+===パラメータ===
+
+^パラメータ^型^説明^
+|localeName|String|ロケール名です。|
+|options|Object|ロケールハンドラに渡される、オプションです。|
+
+
+===戻り値===
+
+なし。

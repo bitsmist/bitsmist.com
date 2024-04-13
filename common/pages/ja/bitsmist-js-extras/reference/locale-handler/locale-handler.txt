@@ -1,0 +1,225 @@
+======LocaleHandler======
+
+=====概要=====
+
+LocaleHandlerは、ローカライゼーションの実際の作業を行います。LocalePerkによって呼び出されます。
+
+また、他のロケールハンドラのベースクラスにもなります。
+
+=====設定=====
+
+====書式-グローバル設定====
+
+全ユニットに共通な設定はグローバル設定の"system.locale"セクションに記述します。
+
+<code javascript>
+{
+    "system": {
+        "locale": {
+            "options": {
+                "messageFormat": "js"|"json",
+                "path": String,
+                "splitLocale": Boolean,
+            }
+        }
+    },
+}
+</code>
+
+====書式-ユニット固有設定====
+
+各ユニット固有の設定は"locale"セクションに記述します。
+
+<code javascript>
+{
+    "locale": {
+        "options": {
+            "messageFormat": "js"|"json",
+            "path": String,
+        },
+        "handlers": {
+            <handlerName>: {
+                "handlerOptions": {
+                    "fileName": Boolean,
+                    "localeRef": String|Boolean,
+                    "splitLocale": Boolean,
+                }
+                "type": "URL" | "messages",
+                "messages": Object,
+                "URL": String,
+            },
+            ...
+        }
+    }
+}
+</code>
+
+====書式-タグ属性====
+
+いくつかの設定は、タグ属性で指定することもできます。
+
+<code html>
+<my-unit
+    bm-localeref=Empty|String
+></my-unit>
+</code>
+
+====fileName====
+
+''型:String'' ''デフォルト:（タグ名）''
+
+ロケールファイルのファイル名を指定します。拡張子は不要です。デフォルトでは、ユニットのタグ名となります。
+
+====localeRef / bm-localeref====
+
+''型:Boolean|String'' ''デフォルト:False''
+
+メッセージファイルへのURLを指定します。Trueの場合、デフォルトのURLが使用されます。
+
+bm-localeref属性を指定した場合、値が指定されていればファイルへのURL、値が指定されてなければTrueとみなされます。
+
+====messageFormat====
+
+''型:String'' ''デフォルト:"json"''
+
+loadMessages()メソッドでロードされる、メッセージファイルのフォーマットを指定します。指定がない場合は、JSONファイルとして扱われます。
+
+====messages====
+
+''型:Object''
+
+ロケールメッセージを指定します。
+
+====splitLocale====
+
+''型:Boolean'' ''デフォルト:False''
+
+Trueの場合、ロケールメッセージファイルは、ロケールごとに分割されていることを示します。ファイルを取得する時に、ファイル名にロケール名が付与されます。
+
+====type====
+
+''型:String'' ''デフォルト:"URL"''
+
+ロケールメッセージをどこから取得するかを指定します。タイプは"URL"、"messages"のいずれかです。"URL"の場合は、"URL"設定で指定されたURLからロケールファイルをロードして使用します。"messages"の場合は、"messages"設定で指定された内容を、ロケールメッセージとしてロードします。
+
+=====プロパティ=====
+
+====options====
+
+''型:Store'' ''get''
+
+このハンドラのオプションを保持するストアです。
+
+====messages====
+
+''型:ChainableStore'' ''get''
+
+ロケールのメッセージを保持するストアです。
+
+=====コンストラクタ=====
+
+ロケールハンドラを初期化します。
+
+=== パラメータ===
+
+^パラメータ^型^説明^
+|unit \\ ''必須''|Unit|ユニットを指定します。|
+|options|Object|ロケールハンドラに対するオプションを指定します。|
+
+=====メソッド=====
+
+====init(options)====
+
+''型:Undefined'' ''非同期''
+
+ロケールハンドラのロケールメッセージを初期化します。まずoptions["messages"]で指定されたメッセージで初期化を行い、さらに指定があれば、外部のメッセージファイルをロードして取り込みます。
+
+LocalePerkの[[ja:bitsmist-js-extras:reference:perk:locale-perk#addhandler|locale.addHandlerスペル]]によって呼び出されます。その際、options引数には[[ja:bitsmist-js-extras:reference:perk:locale-perk#設定|ハンドラの設定（"handlerName"に対する値）]]が渡されます。
+
+=== パラメータ===
+
+^パラメータ^型^説明^
+|options|Object|初期化オプションを指定します。以下のキーがあります。|
+|  "message"|Object|ロケールメッセージを指定します。ここで指定したメッセージで、messagesプロパティが初期化されます。|
+
+===戻り値===
+
+なし。
+
+====has(localeName)====
+
+''型:Boolean''
+
+指定されたロケールのメッセージを保持しているかを返します。
+
+=== パラメータ===
+
+^パラメータ^型^説明^
+|localeName \\ ''必須''|String|ロケール名を指定します。|
+
+===戻り値===
+
+Trueならメッセージを保持しています。
+
+====get(key, localeName, ...args)====
+
+''型:String|Object''
+
+指定されたキーの指定されたロケールのメッセージを返します。通常は文字列ですが、指定するキーによっては、複数の文字列を保持するオブジェクトが返される場合もあります。
+
+=== パラメータ===
+
+^パラメータ^型^説明^
+|key \\ ''必須''|String|取得するメッセージのキー名を指定します。|
+|localeName \\ ''必須''|String|ロケール名を指定します。|
+
+===戻り値===
+
+ロケールメッセージ。
+
+====getAll(localeName)====
+
+''型:Object''
+
+指定されたロケールのメッセージを全て返します。
+
+=== パラメータ===
+
+^パラメータ^型^説明^
+|localeName \\ ''必須''|String|ロケール名を指定します。|
+
+===戻り値===
+
+ロケールメッセージです。
+====localize(rootNode, options)====
+
+''型:Undefined''
+
+オプションで指定されたロケールで、HTML要素をローカライズします。
+
+=== パラメータ===
+
+^パラメータ^型^説明^
+|rootNode \\ ''必須''|HTMLElement|ローカライズの対象となるHTML要素を指定します。|
+|options|Object|ローカライズのオプションです。以下のキーがあります。|
+|  "localeName" \\ ''必須''|String|ロケールを指定します。|
+|  "fallbackLocaleName" \\ ''必須''|String|指定されたロケールが存在しない場合、代わりに使用するロケールを指定します。|
+
+===戻り値===
+
+なし。
+====loadMessages(localeName, options)====
+
+''型:Undefined'' ''非同期''
+
+指定されたロケールの、メッセージファイルをロードします。取得したメッセージは、現在保持するメッセージにマージされます。
+
+=== パラメータ===
+
+^パラメータ^型^説明^
+|localeName|String|ロケールを指定します。|
+|options|Object|ロードのオプションです。[[ja:bitsmist-js-core:reference:util:ajax-util#loadjson_url_options|AjaxUtil.loadJSON()]]に渡されます。|
+
+===戻り値===
+
+なし。

@@ -1,0 +1,47 @@
+======LocaleServerHandler======
+
+''継承:LocaleHandler''
+
+=====概要=====
+
+LocaleServerHandlerは、初期化時にロケールサーバーに接続し、ロケールメッセージをロケールサーバから取得して、ローカライゼーションを行います。LoaclePerkによって呼び出されます。
+
+<WRAP admonition note>
+このページでは、親クラスと違う箇所のみを説明しています。
+</WRAP>
+
+=====設定=====
+
+====書式-グローバル設定====
+
+全ユニットに共通な設定はグローバル設定の"system.locale"セクションに記述します。
+
+<code javascript>
+{
+    "system": {
+        "locale": {
+            "options": {
+                "localeServer": Boolean|String,
+            }
+        }
+    },
+}
+</code>
+
+====書式-ユニット固有設定====
+
+各ユニット固有の設定は"locale"セクションに記述します。
+
+<code javascript>
+{
+    "locale": {
+        "options": {
+            "localeServer": Boolean|String,
+        },
+    }
+}
+</code>
+
+====localeServer====
+
+[[ja:bitsmist-js-extras:reference:perk:locale-perk#localeserver|LocalePerk - 設定 - localeServer]]を参照してください。
