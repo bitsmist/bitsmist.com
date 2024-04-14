@@ -9,6 +9,7 @@ ln -s ../common/units .
 popd
 
 pushd public/data
+mv pages pages.bak
 ln -s ../../common/pages .
 popd
 
