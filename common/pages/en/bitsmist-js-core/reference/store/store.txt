@@ -20,7 +20,7 @@ The store options.
 
 ''Type:Object'' ''get/set''
 
-The object that contains a copy of all items in the store. The copy is created using [[#clone|clone()]] method. The stored items are initialized to the passed values when set.
+The object that contains a copy of all items in the store. The copy is created using [[#clone|clone()]] method.
 
 ----
 
