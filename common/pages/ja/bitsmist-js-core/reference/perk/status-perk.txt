@@ -36,7 +36,8 @@ StatusPerkはユニットの状態に関する機能を付与します。
         },
         "waitFor": {
             <eventName>: [{
-                (設定できる値はbasic.locateスキルを参照してください)
+                <ユニット>:(設定できる値はbasic.locateスキルを参照),
+                "status": String,
             }, ...],
             ...
         }
@@ -48,9 +49,18 @@ StatusPerkはユニットの状態に関する機能を付与します。
 
 ''型:String''
 
-イベント名を指定します。ここで指定されたイベントのイベントハンドラ内で、他のユニットを待ちます。有効なイベント名はBitsmistJSイベント、もしくはJavascriptの標準のイベントです。
+イベント名を指定します。ここで指定されたイベントで、他のユニットが特定のステータスになるのを待ちます。有効なイベント名はBitsmistJSイベント、もしくはJavascriptの標準のイベントです。
 
-値には、[[ja:bitsmist-js-core:reference:perk:basic-perk#locate|basic.locate]]スキルのtaget引数と同じものを、配列で指定します。
+値にはどのユニットがどのステータスになるのを待つのか、を記述したオブジェクトの配列を指定します。複数のオブジェクトを配列に入れることで、複数のユニットを待つことができます。
+
+===="status"====
+
+''デフォルト:"ready"''
+
+指定したユニットがどの[[#status1|ステータス]]になるのかを待つのかを指定します。指定がない場合は"ready"ステータスになるのを待ちます。
+====<unit>====
+
+どのユニットを待つのかを指定します。[[ja:bitsmist-js-core:reference:perk:basic-perk#locate|basic.locate]]スキルのtaget引数と同じものを指定します。
 
 ===="waitForTimeout"====
 
