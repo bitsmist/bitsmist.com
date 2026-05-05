@@ -1,0 +1,3 @@
+htmlok Plugin by saggi, glen
+Wrap Plugin by Anika Henke
+Table Width Plugin by Mykola Ostrovskyy
