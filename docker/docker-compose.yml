@@ -33,9 +33,9 @@ services:
         labels:
             - traefik.enable=true
             - traefik.docker.network=proxy-net
-            - traefik.http.routers.my-scribble-net_nginx.rule=Host(`bitsmist.com`)
-            - traefik.http.routers.my-scribble-net_nginx.entrypoints=websecure
-            - traefik.http.routers.my-scribble-net_nginx.tls=true
+            - traefik.http.routers.bitsmist-com_nginx.rule=Host(`bitsmist.com`)
+            - traefik.http.routers.bitsmist-com_nginx.entrypoints=websecure
+            - traefik.http.routers.bitsmist-com_nginx.tls=true
         networks:
           - proxy-net
           - bitsmist.com-net
