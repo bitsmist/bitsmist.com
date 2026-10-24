@@ -5,9 +5,6 @@ RUN usermod  --uid 1000 www-data
 RUN groupmod --gid 1000 www-data
 RUN apk del shadow
 
-RUN apk --update --no-cache add autoconf postgresql-dev
-RUN \
-	docker-php-ext-install -j$(nproc) pdo_mysql mysqli pdo_pgsql
 # RUN apk --no-cache add --virtual .buildtools \
 # 		build-base \
 # 		libffi-dev && \
