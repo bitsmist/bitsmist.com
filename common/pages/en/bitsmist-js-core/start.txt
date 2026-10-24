@@ -1,12 +1,12 @@
 ====== BitsmistJS Documents ======
 
-** Introduction **
+**Introduction**
 
   * [[en:bitsmist-js-core:general:overview|Overview]]
   * [[en:bitsmist-js-core:general:installation|Installation]]
   * [[en:bitsmist-js-core:general:sample|Sample Unit]]
 
-** Unit Explained **
+**Unit Explained**
 
   * [[en:bitsmist-js-core:unit:overview|Overview]]
   * [[en:bitsmist-js-core:unit:asset|Properties and Methods]]
@@ -17,11 +17,11 @@
   * [[en:bitsmist-js-core:unit:css|CSS]]
   * [[en:bitsmist-js-core:unit:perks|Extending with Perks]]
 
-** Reference - Unit **
+**Reference - Unit**
 
   * [[en:bitsmist-js-core:reference:unit:unit|Unit]]
 
-** Reference - Perk **
+**Reference - Perk**
 
   * [[en:bitsmist-js-core:reference:perk:perk|Perk (Base Class)]]
   * [[en:bitsmist-js-core:reference:perk:basic-perk|BasicPerk]]
@@ -32,12 +32,12 @@
   * [[en:bitsmist-js-core:reference:perk:style-perk|StylePerk]]
   * [[en:bitsmist-js-core:reference:perk:unit-perk|UnitPerk]]
 
-** Reference - Store **
+**Reference - Store**
 
   * [[en:bitsmist-js-core:reference:store:store|Store]]
   * [[en:bitsmist-js-core:reference:store:chainable-store|ChainableStore]]
 
-** Reference - Utility **
+**Reference - Utility**
 
   * [[en:bitsmist-js-core:reference:util:ajax-util|AjaxUtil]]
   * [[en:bitsmist-js-core:reference:util:class-util|ClassUtil]]

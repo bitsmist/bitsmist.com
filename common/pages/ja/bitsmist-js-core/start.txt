@@ -1,12 +1,12 @@
 ====== BitsmistJS ドキュメント ======
 
-** 紹介 **
+**紹介**
 
   * [[ja:bitsmist-js-core:general:overview|概要]]
   * [[ja:bitsmist-js-core:general:installation|インストール]]
   * [[ja:bitsmist-js-core:general:sample|サンプルユニットを作る]]
 
-** ユニットの解説 **
+**ユニットの解説**
 
   * [[ja:bitsmist-js-core:unit:overview|概要]]
   * [[ja:bitsmist-js-core:unit:asset|プロパティとメソッド]]
@@ -17,11 +17,11 @@
   * [[ja:bitsmist-js-core:unit:css|CSS]]
   * [[ja:bitsmist-js-core:unit:perks|パークによる拡張]]
 
-** リファレンス - ユニット **
+**リファレンス - ユニット**
 
   * [[ja:bitsmist-js-core:reference:unit:unit|Unit]]
 
-** リファレンス - パーク **
+**リファレンス - パーク**
 
   * [[ja:bitsmist-js-core:reference:perk:perk|Perk（ベースクラス）]]
   * [[ja:bitsmist-js-core:reference:perk:basic-perk|BasicPerk]]
@@ -32,12 +32,12 @@
   * [[ja:bitsmist-js-core:reference:perk:style-perk|StylePerk]]
   * [[ja:bitsmist-js-core:reference:perk:unit-perk|UnitPerk]]
 
-** リファレンス - ストア **
+**リファレンス - ストア**
 
   * [[ja:bitsmist-js-core:reference:store:store|Store]]
   * [[ja:bitsmist-js-core:reference:store:chainable-store|ChainableStore]]
 
-** リファレンス - ユーティリティ **
+**リファレンス - ユーティリティ**
 
   * [[ja:bitsmist-js-core:reference:util:ajax-util|AjaxUtil]]
   * [[ja:bitsmist-js-core:reference:util:class-util|ClassUtil]]

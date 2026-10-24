@@ -1,12 +1,12 @@
 ====== BitsmistServer ドキュメント ======
 
-** 紹介 **
+**紹介**
 
   * [[ja:bitsmist_server:docs:introduction:overview|概要]]
   * [[ja:bitsmist_server:docs:introduction:installation|インストール]]
   * [[ja:bitsmist_server:docs:introduction:sample|サンプルAPIを作る]]
 
-** 全般 **
+**全般**
 
   * [[ja:bitsmist_server:docs:general:folder|フォルダ構成]]
   * [[ja:bitsmist_server:docs:general:setting|設定]]
@@ -15,18 +15,18 @@
   * [[ja:bitsmist_server:docs:general:plugin|プラグイン]]
   * [[ja:bitsmist_server:docs:general:error|エラー処理]]
 
-** リファレンス - ミドルウェア **
+**リファレンス - ミドルウェア**
 
   * [[ja:bitsmist_server:docs:reference:middleware:|]]
 
-** リファレンス - サービス **
+**リファレンス - サービス**
 
   * [[ja:bitsmist_server:docs:reference:service:|]]
 
-** リファレンス - プラグイン **
+**リファレンス - プラグイン**
 
   * [[ja:bitsmist_server:docs:reference:plugin:|]]
 
-** リファレンス - ユーティリティ **
+**リファレンス - ユーティリティ**
 
   * [[ja:bitsmist_server:docs:reference:utility:|]]

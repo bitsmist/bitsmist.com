@@ -1,2 +1,2 @@
-** Bitsmist Frameworks **
+**Bitsmist Frameworks**
   * [[ja:bitsmist-frameworks:start|概要]]
