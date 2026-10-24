@@ -3,7 +3,6 @@ services:
     bitsmist.com_phpfpm:
         image: bitsmist.com/phpfpm
         container_name: bitsmist.com_phpfpm
-        network_mode: host
         volumes:
             - ./phpfpm/conf/tzdata/Japan:/etc/localtime
             - ./phpfpm/conf/php/php.ini:/usr/local/etc/php/php.ini
@@ -12,10 +11,14 @@ services:
             - ./phpfpm/log:/usr/local/var/log
             - ./phpfpm/contents/common:/usr/share/contents/common
             - ./phpfpm/contents/public:/usr/share/contents/public
+        environment:
+            - PUID=1000
+            - PGID=1000
+        networks:
+          - bitsmist.com-net
     bitsmist.com_nginx:
         image: bitsmist.com/nginx
         container_name: bitsmist.com_nginx
-        network_mode: host
         depends_on:
             - bitsmist.com_phpfpm
         volumes:
@@ -24,3 +27,20 @@ services:
             - ./nginx/log:/var/log/nginx
             - ./phpfpm/contents/common:/usr/share/contents/common
             - ./phpfpm/contents/public:/usr/share/contents/public
+        environment:
+            - PUID=1000
+            - PGID=1000
+        labels:
+            - traefik.enable=true
+            - traefik.docker.network=proxy-net
+            - traefik.http.routers.my-scribble-net_nginx.rule=Host(`bitsmist.com`)
+            - traefik.http.routers.my-scribble-net_nginx.entrypoints=websecure
+            - traefik.http.routers.my-scribble-net_nginx.tls=true
+        networks:
+          - proxy-net
+          - bitsmist.com-net
+
+networks:
+  proxy-net:
+    external: true
+  bitsmist.com-net:

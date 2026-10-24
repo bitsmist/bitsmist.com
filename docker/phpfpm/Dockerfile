@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.5-fpm-alpine
 
 RUN apk --update --no-cache add shadow
 RUN usermod  --uid 1000 www-data
